@@ -1,0 +1,25 @@
+{
+  "name": "a11y-contrast-color",
+  "version": "0.0.1",
+  "description": "A utility library for calculating luminance, contrast ratio, and appropriate contrast colors to ensure web accessibility.",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/src/index.js",
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "author": "Moonki Kim<moonki.kim.kr@gmail.com>",
+  "license": "MIT",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moong23/a11y-contrast-color"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.4",
+    "typescript": "^5.5.4"
+  }
+}

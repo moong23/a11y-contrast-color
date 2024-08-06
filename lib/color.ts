@@ -1,0 +1,221 @@
+import type { RGB, RGBElement } from '../types/color';
+import { RGBChannelWeights } from '../types/color';
+
+/**
+ * @private
+ * Validate the RGB color array.
+ * @param {RGB} color - The RGB color array.
+ * @throws Will throw an error if the RGB array is invalid.
+ * @returns {boolean} True if the RGB array is valid.
+ */
+const validateColor = (color: RGB) => {
+  if (!Array.isArray(color) || color.length !== 3) {
+    throw new Error(
+      'Invalid RGB array. RGB should be an array of three numbers.'
+    );
+  }
+  if (
+    !color.every(
+      (value) => typeof value === 'number' && value >= 0 && value <= 255
+    )
+  ) {
+    throw new Error(
+      'Invalid RGB values. Each value should be a number between 0 and 255.'
+    );
+  }
+  return true;
+};
+
+/**
+ * @private
+ * Validate the target luminance value.
+ * @param {number} luminance - The luminance value.
+ * @throws Will throw an error if the luminance is invalid.
+ * @returns {boolean} True if the luminance is valid.
+ */
+const validateLuminance = (luminance: number) => {
+  if (typeof luminance !== 'number' || luminance <= 0) {
+    throw new Error(
+      'Invalid target luminance. Target luminance should be a number greater than 0.'
+    );
+  } else if (luminance > 21) {
+    throw new Error(
+      'Invalid target luminance. Target luminance should be a number less than or equal to 21.'
+    );
+  }
+  return true;
+};
+
+/**
+ * Calculate contrast ratio between two luminance values.
+ * @param {number} lum1 - The first luminance value.
+ * @param {number} lum2 - The second luminance value.
+ * @returns {number} The contrast ratio.
+ */
+export const getContrastRatio = (lum1: number, lum2: number) => {
+  return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+};
+
+/**
+ * Calculate luminance from RGB values.
+ * @param {Array} RGBValue - Array containing R, G, B values.
+ * @returns {number} The calculated luminance.
+ */
+export const getLuminance = (RGBValue: RGB) => {
+  const LinearRGB = RGBValue.map(RGB8bitToLinear);
+
+  return 0.2126 * LinearRGB[0] + 0.7152 * LinearRGB[1] + 0.0722 * LinearRGB[2];
+};
+
+/**
+ * @private
+ * Convert an 8-bit RGB channel value to a linear RGB value.
+ * @param {number} channelValue - The 8-bit RGB channel value.
+ * @returns {number} The linear RGB value.
+ */
+const RGB8bitToLinear = (channelValue: number) => {
+  if (channelValue < 0 || channelValue > 255) {
+    throw new Error('Invalid 8-bit RGB channel value.');
+  }
+
+  const normalizedValue = channelValue / 255;
+  return normalizedValue <= 0.03928
+    ? normalizedValue / 12.92
+    : Math.pow((normalizedValue + 0.055) / 1.055, 2.4);
+};
+
+/**
+ * @private
+ * Convert a linear RGB value to an 8-bit RGB channel value.
+ * @param {number} linearValue - The linear RGB value.
+ * @returns {number} The 8-bit RGB channel value.
+ */
+const RGBLinearTo8bit = (linearValue: number) => {
+  if (linearValue < 0 || linearValue > 1) {
+    throw new Error(`Invalid linear RGB value`);
+  }
+  return linearValue <= 0.00303949
+    ? Math.round(linearValue * 12.92 * 255)
+    : Math.round((1.055 * Math.pow(linearValue, 1 / 2.4) - 0.055) * 255);
+};
+
+/**
+ * @private
+ * @param {number} multiplier - The multiplier for the bounds.
+ * @param {number} luminance - The luminance value.
+ * @returns {number[]} The lower and upper bounds.
+ */
+const calculateBounds = (multiplier: number, luminance: number) => {
+  const lowerBound = luminance / multiplier + 0.05 * (1 / multiplier - 1);
+  const upperBound = multiplier * luminance + 0.05 * (multiplier - 1);
+
+  return [Math.max(0, lowerBound), Math.min(1, upperBound)];
+};
+
+/**
+ * @private
+ * Calculate the total length between the lower and upper bounds.
+ * @param {number[]} bounds - The bounds as an array of two numbers.
+ * @returns {number} The total length between the bounds.
+ */
+const calculateTotalLength = (bounds: number[]) => {
+  const lowerBound = Math.max(0, bounds[0]);
+  const upperBound = Math.min(1, bounds[1]);
+
+  return lowerBound + 1 - upperBound;
+};
+
+/**
+ * @private
+ * Get the linear RGB value from the luminance and target RGB element.
+ * @param {number} luminance - The luminance value.
+ * @param {RGBElement} target - The target RGB element (R, G, or B).
+ * @returns {number} The linear RGB value.
+ */
+const LinearRGBfromLuminance = (luminance: number, target: RGBElement) => {
+  return luminance / RGBChannelWeights[target];
+};
+
+/**
+ * @private
+ * Finds color which has the contrast greater than the specified luminance with the given color.
+ * @param {RGB} color - The base RGB color.
+ * @param {number} luminance - The contrast ratio (3.0, 4.5, 7.0).
+ * @returns {RGB} The contrast color.
+ */
+const getContrastColorInnerLogic = (color: RGB, luminance: number) => {
+  if (!validateColor(color) || !validateLuminance(luminance)) {
+    return;
+  }
+  let backgroundLuminance = getLuminance(color);
+  let [lowerBound, upperBound] = calculateBounds(
+    luminance,
+    backgroundLuminance
+  );
+  let totalLength = calculateTotalLength([lowerBound, upperBound]);
+
+  let _tmp = Math.random() * totalLength * RGBChannelWeights.R;
+  let _targetLuminance =
+    _tmp > lowerBound
+      ? _tmp + (-lowerBound + upperBound) * RGBChannelWeights.R
+      : _tmp;
+
+  const LinearR = LinearRGBfromLuminance(_targetLuminance, 'R');
+  const _8bitR = RGBLinearTo8bit(LinearR);
+
+  backgroundLuminance -= _targetLuminance;
+  [lowerBound, upperBound] = calculateBounds(luminance, backgroundLuminance);
+  totalLength = calculateTotalLength([lowerBound, upperBound]);
+
+  _tmp = Math.random() * totalLength * RGBChannelWeights.G;
+  _targetLuminance =
+    _tmp > lowerBound
+      ? _tmp + (-lowerBound + upperBound) * RGBChannelWeights.G
+      : _tmp;
+
+  const LinearG = LinearRGBfromLuminance(_targetLuminance, 'G');
+  const _8bitG = RGBLinearTo8bit(LinearG);
+
+  backgroundLuminance -= _targetLuminance;
+  [lowerBound, upperBound] = calculateBounds(luminance, backgroundLuminance);
+  totalLength = calculateTotalLength([lowerBound, upperBound]);
+
+  _tmp = Math.random() * totalLength * RGBChannelWeights.B;
+  _targetLuminance =
+    _tmp > lowerBound
+      ? _tmp + (-lowerBound + upperBound) * RGBChannelWeights.B
+      : _tmp;
+
+  const LinearB = LinearRGBfromLuminance(_targetLuminance, 'B');
+  const _8bitB = RGBLinearTo8bit(LinearB);
+
+  return [_8bitR, _8bitG, _8bitB];
+};
+
+/**
+ * Finds color which has the contrast greater than the specified luminance with the given color.
+ * @param {RGB} color - The base RGB color.
+ * @param {number} luminance - The contrast ratio (3.0, 4.5, 7.0).
+ * @returns {RGB | null} The contrast color, or null if no suitable color is found.
+ */
+export const getContrastColor = (color: RGB, luminance: number) => {
+  let i = 0;
+  while (i < 1000) {
+    i++;
+    const bgContrast = getLuminance(color);
+    try {
+      const targetColor = getContrastColorInnerLogic(color, luminance);
+      const targetContrast = getLuminance(targetColor! as RGB);
+      if (getContrastRatio(targetContrast, bgContrast) > luminance) {
+        return targetColor;
+      }
+    } catch (e: any) {
+      if (e.message === 'Invalid linear RGB value') {
+        continue;
+      } else {
+        throw e;
+      }
+    }
+  }
+  return null;
+};
