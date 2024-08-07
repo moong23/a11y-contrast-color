@@ -2,7 +2,7 @@
   "name": "a11y-contrast-color",
   "version": "1.0.4",
   "description": "A utility library for calculating luminance, contrast ratio, and appropriate contrast colors to ensure web accessibility.",
-  "main": "dist/src/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/src/index.js",
