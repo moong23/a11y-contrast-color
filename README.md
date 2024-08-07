@@ -1,18 +1,13 @@
-# a11y-contrast-color
+# 🎨 a11y-contrast-color 🎨
 
-a11y-contrast-color is a utility library for calculating luminance, contrast ratio, and appropriate contrast colors to ensure accessibility compliance in web applications. It helps developers easily determine whether text and background color combinations meet the WCAG (Web Content Accessibility Guidelines) standards.
+**a11y-contrast-color** is a utility library for calculating [luminance](https://www.w3.org/TR/WCAG20/relative-luminance.xml), [contrast ratio](https://www.w3.org/TR/WCAG20/#contrast-ratiodef), and recommending appropriate contrast colors to ensure accessibility compliance in web applications.
 
-- [a11y-contrast-color](#a11y-contrast-color)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [getLuminance](#getLuminance)
-    - [getContrastRatio](#getContrastRatio)
-    - [getContrastColor](#getContrastColor)
+It helps developers easily determine whether text and background color combinations meet the [WCAG (Web Content Accessibility Guidelines) standards](https://www.w3.org/WAI/older-users/developing/#color). by providing functions to recommend contrast colors that can improve readability and accessibility.
 
 ## Installation
 
 ```sh
-npm i a11y-contrast-color
+npm install a11y-contrast-color
 ```
 
 Or
@@ -29,7 +24,7 @@ Calculates the luminance of a color.
 
 #### Parameters
 
-- color: RGB (required): An array of three numbers representing the RGB values of the color.
+- color: RGB (required): An array of three numbers representing the `RGB values(value in the range of [0,255])` of the color.
 
 #### Returns
 
@@ -48,8 +43,8 @@ Calculates the contrast ratio between two colors.
 
 #### Parameters
 
-- lum1: number (required): The first luminance value.
-- lum2: number (required): The second luminance value.
+- color1: RGB (required): The first color value in RGB format.
+- color2: RGB (required): The second color value in RGB format.
 
 #### Returns
 
@@ -58,8 +53,10 @@ Calculates the contrast ratio between two colors.
 ```ts
 import { getContrastRatio } from 'a11y-contrast-color';
 
-const contrastRatio = getContrastRatio(0.2126, 1.0);
-console.log(contrastRatio); // Output: 5.252
+const color1 = [128, 128, 128];
+const color2 = [255, 255, 255];
+const contrastRatio = getContrastRatio(color1, color2);
+console.log(contrastRatio); // Output: 3.949439...
 ```
 
 ### `getContrastColor`
@@ -69,7 +66,7 @@ Determines the appropriate contrast color (black or white) for a given backgroun
 #### Parameters
 
 - color: RGB (required): An array of three numbers representing the RGB values of the background color.
-- luminance: number (required): The target luminance ratio to achieve.
+- luminance: number (required): The target luminance ratio to be achieved or exceeded.
 
 #### Returns
 
@@ -82,4 +79,6 @@ const contrastColor = getContrastColor([255, 0, 0], 4.5);
 console.log(contrastColor); // Output: [R, G, B] || null depending on the contrast requirement
 ```
 
-This library provides essential functions to help you maintain high accessibility standards in your web applications by ensuring that text is readable against various background colors.
+---
+
+All projects are under the MIT license. Please refer to the [LICENSE](LICENSE) file for more information.
