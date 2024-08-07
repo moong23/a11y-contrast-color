@@ -1,1 +1,1 @@
-export * from './color.ts';
+export * from './color';

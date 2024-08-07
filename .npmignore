@@ -3,11 +3,11 @@
 .git
 __tests__
 coverage
-lib
+/lib
 node_modules
-src
-types
-util
+/src
+/types
+/util
 .prettierrc
 package-lock.json
 tsconfig.json

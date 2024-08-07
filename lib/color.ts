@@ -6,7 +6,6 @@ import { RGBChannelWeights } from '../types/color';
  * Validate the RGB color array.
  * @param {RGB} color - The RGB color array.
  * @throws Will throw an error if the RGB array is invalid.
- * @returns {boolean} True if the RGB array is valid.
  */
 const validateColor = (color: RGB) => {
   if (!Array.isArray(color) || color.length !== 3) {
@@ -23,7 +22,6 @@ const validateColor = (color: RGB) => {
       'Invalid RGB values. Each value should be a number between 0 and 255.'
     );
   }
-  return true;
 };
 
 /**
@@ -31,7 +29,6 @@ const validateColor = (color: RGB) => {
  * Validate the target luminance value.
  * @param {number} luminance - The luminance value.
  * @throws Will throw an error if the luminance is invalid.
- * @returns {boolean} True if the luminance is valid.
  */
 const validateLuminance = (luminance: number) => {
   if (typeof luminance !== 'number' || luminance <= 0) {
@@ -43,17 +40,36 @@ const validateLuminance = (luminance: number) => {
       'Invalid target luminance. Target luminance should be a number less than or equal to 21.'
     );
   }
-  return true;
 };
 
 /**
+ * @private
  * Calculate contrast ratio between two luminance values.
  * @param {number} lum1 - The first luminance value.
  * @param {number} lum2 - The second luminance value.
  * @returns {number} The contrast ratio.
  */
-export const getContrastRatio = (lum1: number, lum2: number) => {
+const calculateContrastRatio = (lum1: number, lum2: number): number => {
   return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+};
+
+/**
+ * Calculate contrast ratio between two RGB colors.
+ * @param {RGB} color1 - The first RGB color.
+ * @param {RGB} color2 - The second RGB color.
+ * @returns {number} The contrast ratio.
+ */
+export const getContrastRatio = (
+  color1: number[],
+  color2: number[]
+): number => {
+  validateColor(color1 as RGB);
+  validateColor(color2 as RGB);
+
+  return calculateContrastRatio(
+    getLuminance(color1 as RGB),
+    getLuminance(color2 as RGB)
+  );
 };
 
 /**
@@ -61,7 +77,8 @@ export const getContrastRatio = (lum1: number, lum2: number) => {
  * @param {Array} RGBValue - Array containing R, G, B values.
  * @returns {number} The calculated luminance.
  */
-export const getLuminance = (RGBValue: RGB) => {
+export const getLuminance = (RGBValue: number[]): number => {
+  validateColor(RGBValue as RGB);
   const LinearRGB = RGBValue.map(RGB8bitToLinear);
 
   return 0.2126 * LinearRGB[0] + 0.7152 * LinearRGB[1] + 0.0722 * LinearRGB[2];
@@ -73,7 +90,7 @@ export const getLuminance = (RGBValue: RGB) => {
  * @param {number} channelValue - The 8-bit RGB channel value.
  * @returns {number} The linear RGB value.
  */
-const RGB8bitToLinear = (channelValue: number) => {
+const RGB8bitToLinear = (channelValue: number): number => {
   if (channelValue < 0 || channelValue > 255) {
     throw new Error('Invalid 8-bit RGB channel value.');
   }
@@ -90,7 +107,7 @@ const RGB8bitToLinear = (channelValue: number) => {
  * @param {number} linearValue - The linear RGB value.
  * @returns {number} The 8-bit RGB channel value.
  */
-const RGBLinearTo8bit = (linearValue: number) => {
+const RGBLinearTo8bit = (linearValue: number): number => {
   if (linearValue < 0 || linearValue > 1) {
     throw new Error(`Invalid linear RGB value`);
   }
@@ -103,9 +120,12 @@ const RGBLinearTo8bit = (linearValue: number) => {
  * @private
  * @param {number} multiplier - The multiplier for the bounds.
  * @param {number} luminance - The luminance value.
- * @returns {number[]} The lower and upper bounds.
+ * @returns {[number, number]} The lower and upper bounds.
  */
-const calculateBounds = (multiplier: number, luminance: number) => {
+const calculateBounds = (
+  multiplier: number,
+  luminance: number
+): [number, number] => {
   const lowerBound = luminance / multiplier + 0.05 * (1 / multiplier - 1);
   const upperBound = multiplier * luminance + 0.05 * (multiplier - 1);
 
@@ -132,7 +152,10 @@ const calculateTotalLength = (bounds: number[]) => {
  * @param {RGBElement} target - The target RGB element (R, G, or B).
  * @returns {number} The linear RGB value.
  */
-const LinearRGBfromLuminance = (luminance: number, target: RGBElement) => {
+const LinearRGBfromLuminance = (
+  luminance: number,
+  target: RGBElement
+): number => {
   return luminance / RGBChannelWeights[target];
 };
 
@@ -143,10 +166,10 @@ const LinearRGBfromLuminance = (luminance: number, target: RGBElement) => {
  * @param {number} luminance - The contrast ratio (3.0, 4.5, 7.0).
  * @returns {RGB} The contrast color.
  */
-const getContrastColorInnerLogic = (color: RGB, luminance: number) => {
-  if (!validateColor(color) || !validateLuminance(luminance)) {
-    return;
-  }
+const getContrastColorInnerLogic = (
+  color: RGB,
+  luminance: number
+): RGB | null => {
   let backgroundLuminance = getLuminance(color);
   let [lowerBound, upperBound] = calculateBounds(
     luminance,
@@ -194,19 +217,26 @@ const getContrastColorInnerLogic = (color: RGB, luminance: number) => {
 
 /**
  * Finds color which has the contrast greater than the specified luminance with the given color.
- * @param {RGB} color - The base RGB color.
+ * @param {RGB} color - The base RGB color. (validate if the given color is RGB format)
  * @param {number} luminance - The contrast ratio (3.0, 4.5, 7.0).
+ * @throws Will throw an error if the RGB array is invalid or the luminance is invalid.
  * @returns {RGB | null} The contrast color, or null if no suitable color is found.
  */
-export const getContrastColor = (color: RGB, luminance: number) => {
+export const getContrastColor = (
+  color: number[],
+  luminance: number
+): RGB | null => {
+  // validate parameters
+  validateColor(color as RGB);
+  validateLuminance(luminance);
+  const bgColor = color as RGB;
+
   let i = 0;
   while (i < 1000) {
     i++;
-    const bgContrast = getLuminance(color);
     try {
-      const targetColor = getContrastColorInnerLogic(color, luminance);
-      const targetContrast = getLuminance(targetColor! as RGB);
-      if (getContrastRatio(targetContrast, bgContrast) > luminance) {
+      const targetColor = getContrastColorInnerLogic(bgColor, luminance);
+      if (getContrastRatio(targetColor!, bgColor) > luminance) {
         return targetColor;
       }
     } catch (e: any) {
@@ -217,5 +247,6 @@ export const getContrastColor = (color: RGB, luminance: number) => {
       }
     }
   }
+  // return null if no suitable color is found
   return null;
 };

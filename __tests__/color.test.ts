@@ -1,8 +1,7 @@
 import { getContrastColor, getLuminance, getContrastRatio } from '../lib/color';
-
 import type { RGB } from '../types/color';
 
-// Test data
+// Test data assets
 const color1: RGB = [255, 0, 0]; // Red
 const color2: RGB = [0, 255, 0]; // Green
 const color3: RGB = [0, 0, 255]; // Blue
@@ -17,6 +16,7 @@ const testColor = (color: RGB, luminance: number) => {
   expect(contrastColor!.every((value) => value >= 0 && value <= 255)).toBe(
     true
   );
+  expect(getContrastRatio(color, contrastColor!)).toBeGreaterThan(luminance);
 };
 
 describe('getLuminance', () => {
@@ -32,27 +32,30 @@ describe('getLuminance', () => {
 
 describe('getContrastRatio', () => {
   test('calculates correct contrast ratio for different luminance values', () => {
-    expect(getContrastRatio(0.5, 0.25)).toBeCloseTo(1.833, 1);
-    expect(getContrastRatio(0.25, 0.5)).toBeCloseTo(
-      getContrastRatio(0.5, 0.25)
-    );
-    expect(getContrastRatio(1, 0)).toBeCloseTo(21, 1);
-    expect(getContrastRatio(0, 1)).toBeCloseTo(getContrastRatio(1, 0));
+    expect(getContrastRatio(color1, color2)).toBeCloseTo(2.91, 2);
+    expect(getContrastRatio(color1, color3)).toBeCloseTo(2.15, 2);
+    expect(getContrastRatio(color1, color5)).toBeCloseTo(4, 2);
+    expect(getContrastRatio(color4, color5)).toBeCloseTo(3.95, 2);
+    expect(getContrastRatio(color6, color5)).toBeCloseTo(21, 1);
   });
 
   test('returns 1 for identical luminance values', () => {
-    expect(getContrastRatio(0.5, 0.5)).toBe(1);
-    expect(getContrastRatio(1, 1)).toBe(1);
-    expect(getContrastRatio(0, 0)).toBe(1);
+    expect(getContrastRatio(color1, color1)).toBe(1);
+    expect(getContrastRatio(color2, color2)).toBe(1);
   });
 
   test('handles edge cases of very low luminance values', () => {
-    expect(getContrastRatio(0.0001, 0.0001)).toBe(1);
-    expect(getContrastRatio(0.0001, 0)).toBeCloseTo(1.002, 3);
+    expect(
+      getContrastRatio([0.0001, 0.0001, 0.0001], [0.0001, 0.0001, 0.0001])
+    ).toBe(1);
+    expect(getContrastRatio([0.0001, 0.0001, 0.0001], [0, 0, 0])).toBeCloseTo(
+      1.0,
+      3
+    );
   });
 
   test('handles edge cases of very high luminance values', () => {
-    expect(getContrastRatio(1, 0.0001)).toBeCloseTo(21, 1);
+    expect(getContrastRatio([255, 255, 255], [0, 0, 0])).toBeCloseTo(21, 1);
   });
 });
 
@@ -67,8 +70,15 @@ describe('getContrastColor', () => {
   });
 
   test('throws error for invalid input color', () => {
-    expect(() => getContrastColor([-1, 0, 0] as RGB, 3.0)).toThrow();
-    expect(() => getContrastColor([256, 0, 0] as RGB, 3.0)).toThrow();
+    expect(() => getContrastColor([-1, 0, 0], 3.0)).toThrow();
+    expect(() => getContrastColor([256, 0, 0], 3.0)).toThrow();
+    expect(() =>
+      getContrastColor([255, '0', 0] as unknown as number[], 3.0)
+    ).toThrow();
+    expect(() => getContrastColor([255, 0], 3.0)).toThrow();
+    expect(() =>
+      getContrastColor('#ff0000' as unknown as number[], 3.0)
+    ).toThrow();
   });
 
   test('throws error for invalid luminance', () => {
