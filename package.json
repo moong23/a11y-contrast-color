@@ -1,6 +1,6 @@
 {
   "name": "a11y-contrast-color",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A utility library for calculating luminance, contrast ratio, and appropriate contrast colors to ensure web accessibility.",
   "main": "dist/src/index.js",
   "scripts": {
@@ -16,6 +16,14 @@
     "type": "git",
     "url": "https://github.com/moong23/a11y-contrast-color"
   },
+  "keywords": [
+    "a11y",
+    "accessibility",
+    "contrast",
+    "color",
+    "luminance",
+    "ratio"
+  ],
   "homepage": "https://github.com/moong23/a11y-contrast-color#a11y-contrast-color",
   "devDependencies": {
     "@types/jest": "^29.5.12",
