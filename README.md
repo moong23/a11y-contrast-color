@@ -2,7 +2,7 @@
 
 **a11y-contrast-color** is a utility library for calculating [luminance](https://www.w3.org/TR/WCAG20/relative-luminance.xml), [contrast ratio](https://www.w3.org/TR/WCAG20/#contrast-ratiodef), and recommending appropriate contrast colors to ensure accessibility compliance in web applications.
 
-It helps developers easily determine whether text and background color combinations meet the [WCAG (Web Content Accessibility Guidelines) standards](https://www.w3.org/WAI/older-users/developing/#color). by providing functions to recommend contrast colors that can improve readability and accessibility.
+It helps developers easily determine whether text and background color combinations meet the [Web Content Accessibility Guidelines(WCAG) standards](https://www.w3.org/WAI/older-users/developing/#color) by providing functions to recommend contrast colors that can improve readability and accessibility.
 
 ## Installation
 
