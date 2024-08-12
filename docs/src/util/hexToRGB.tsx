@@ -1,20 +1,20 @@
-import { RGB } from '../types/color';
+import { RGB } from "../../../package/types/color";
 
-const hexToRGB = (hex: string): RGB => {
+export const hexToRGB = (hex: string): RGB => {
   // Remove the hash at the start if it's there
-  hex = hex.replace('#', '');
+  hex = hex.replace("#", "");
 
   // If the hex code is shorthand (3 characters), convert it to full form (6 characters)
   if (hex.length === 3) {
     hex = hex
-      .split('')
+      .split("")
       .map((char) => char + char)
-      .join('');
+      .join("");
   }
 
   // Ensure that the hex code is now 6 characters long
   if (hex.length !== 6) {
-    throw new Error('Invalid hex color');
+    throw new Error("Invalid hex color");
   }
 
   // Convert hex to RGB

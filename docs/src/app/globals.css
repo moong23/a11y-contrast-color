@@ -7,3 +7,44 @@ body {
   height: 100%;
   width: 100%;
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 160px;
+  height: 4px;
+  background: #ddd;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 20px;
+  background: #4a5568;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 20px;
+  background: #4a5568;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 10px;
+  height: 20px;
+  background: #4a5568;
+  cursor: pointer;
+}
