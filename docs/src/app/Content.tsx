@@ -9,27 +9,30 @@ import { getContrastColor, getContrastRatio } from "a11y-contrast-color";
 const ContentComponent = () => {
   const [bgColor, setBgColor] = useState<RGB>([255, 255, 255]);
   const [fgColor, setFgColor] = useState<RGB>([0, 0, 0]);
+  const [contrastLevel, setContrastLevel] = useState<3 | 4.5 | 7>(3.0);
 
   const handleBtnClick = () => {
-    const fgContrastColor = getContrastColor(bgColor, 3.0);
+    const fgContrastColor = getContrastColor(bgColor, contrastLevel);
     if (fgContrastColor) {
       setFgColor(fgContrastColor);
     } else {
-      alert("No contrast color found : " + bgColor + " with ratio 3.0");
+      alert(
+        "No contrast color found : " + bgColor + " with ratio" + contrastLevel
+      );
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-full">
       <h1 className="text-4xl font-bold">🎨 A11y-contrast-color 🎨</h1>
-      <div className="flex flex-row items-center justify-between w-full h-12 pt-8 text-lg font-semibold max-lg:flex-col max-lg:h-24">
-        <span className="flex flex-col items-center basis-80">
+      <div className="flex flex-row flex-wrap items-center justify-between w-full h-32 text-lg font-semibold">
+        <span className="flex flex-col items-center lg:basis-80">
           BgColor
           <span className="text-lg font-normal">
             [{bgColor[0]}, {bgColor[1]}, {bgColor[2]}]
           </span>
         </span>
-        <span className="flex flex-col items-center basis-80">
+        <span className="flex flex-col items-center lg:basis-80">
           FgColor / Contrast Ratio
           <span className="text-lg font-normal">
             [{fgColor[0]}, {fgColor[1]}, {fgColor[2]}] /{" "}
@@ -38,13 +41,9 @@ const ContentComponent = () => {
         </span>
       </div>
 
-      <div className="flex flex-row items-center w-full h-full gap-10 shrink-0 lg:pb-10 max-lg:flex-col">
+      <div className="flex flex-row items-center w-full gap-10 shrink-0 max-lg:flex-col">
         <div className="flex flex-col items-center justify-center gap-5 p-5 bg-white border w-80 h-80 border-slate-600 shrink-0">
-          <h3 className="text-xl font-bold">background Color</h3>
-          <span
-            tabIndex={0}
-            className="flex flex-col w-full gap-2"
-          >
+          <span className="flex flex-col w-full gap-2">
             <span className="flex items-center justify-between w-full px-4 text-lg font-normal text-red-600">
               <span className="text-center basis-4 shrink-0">R</span>
               <input
@@ -61,8 +60,9 @@ const ContentComponent = () => {
                 }
               />
               <input
-                className="w-10 text-center border border-slate-800"
+                className="w-10 text-center border border-slate-800 focus:outline-none"
                 type="number"
+                tabIndex={1}
                 min={0}
                 max={255}
                 value={bgColor[0]}
@@ -90,7 +90,8 @@ const ContentComponent = () => {
                 }
               />
               <input
-                className="w-10 text-center border border-slate-800"
+                className="w-10 text-center border border-slate-800 focus:outline-none"
+                tabIndex={2}
                 type="number"
                 value={bgColor[1]}
                 onChange={(e) => {
@@ -117,7 +118,8 @@ const ContentComponent = () => {
                 }
               />
               <input
-                className="w-10 text-center border border-slate-800"
+                className="w-10 text-center border border-slate-800 focus:outline-none"
+                tabIndex={3}
                 type="number"
                 value={bgColor[2]}
                 onChange={(e) => {
@@ -137,8 +139,45 @@ const ContentComponent = () => {
               setBgColor(hexToRGB(e.target.value));
             }}
           />
+          <span className="flex flex-row justify-around w-full">
+            Contrast Ratio
+            <label className="flex flex-row gap-2">
+              <input
+                tabIndex={4}
+                type="radio"
+                name="contrast"
+                value="3"
+                checked={contrastLevel === 3}
+                onChange={() => setContrastLevel(3)}
+              />
+              3.0
+            </label>
+            <label className="flex flex-row gap-2">
+              <input
+                tabIndex={4}
+                type="radio"
+                name="contrast"
+                value="3"
+                checked={contrastLevel === 4.5}
+                onChange={() => setContrastLevel(4.5)}
+              />
+              4.5
+            </label>
+            <label className="flex flex-row gap-2">
+              <input
+                tabIndex={4}
+                type="radio"
+                name="contrast"
+                value="3"
+                checked={contrastLevel === 7}
+                onChange={() => setContrastLevel(7)}
+              />
+              7.0
+            </label>
+          </span>
           <input
             type="button"
+            tabIndex={7}
             onClick={handleBtnClick}
             className="w-4/5 h-10 rounded-md cursor-pointer bg-slate-400"
             value="Extract FgColor"
