@@ -24,17 +24,19 @@ const ContentComponent = () => {
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-full">
-      <h1 className="text-4xl font-bold">🎨 A11y-contrast-color 🎨</h1>
-      <div className="flex flex-row flex-wrap items-center justify-between w-full h-32 text-lg font-semibold">
+      <h1 className="text-4xl font-bold max-sm:text-xl">
+        🎨 A11y-contrast-color 🎨
+      </h1>
+      <div className="flex flex-row flex-wrap items-center justify-between w-full h-32 text-lg font-semibold max-sm:text-sm">
         <span className="flex flex-col items-center lg:basis-80">
           BgColor
-          <span className="text-lg font-normal">
+          <span className="text-lg font-normal max-sm:text-sm">
             [{bgColor[0]}, {bgColor[1]}, {bgColor[2]}]
           </span>
         </span>
         <span className="flex flex-col items-center lg:basis-80">
           FgColor / Contrast Ratio
-          <span className="text-lg font-normal">
+          <span className="text-lg font-normal max-sm:text-sm">
             [{fgColor[0]}, {fgColor[1]}, {fgColor[2]}] /{" "}
             {getContrastRatio(bgColor, fgColor).toFixed(2)}
           </span>
@@ -42,9 +44,9 @@ const ContentComponent = () => {
       </div>
 
       <div className="flex flex-row items-center w-full gap-10 shrink-0 max-lg:flex-col">
-        <div className="flex flex-col items-center justify-center gap-5 p-5 bg-white border w-80 h-80 border-slate-600 shrink-0">
+        <div className="flex flex-col items-center justify-center gap-5 p-5 text-lg bg-white border w-80 h-80 border-slate-600 shrink-0 max-sm:text-sm">
           <span className="flex flex-col w-full gap-2">
-            <span className="flex items-center justify-between w-full px-4 text-lg font-normal text-red-600">
+            <span className="flex items-center justify-between w-full px-4 font-normal text-red-600">
               <span className="text-center basis-4 shrink-0">R</span>
               <input
                 type="range"
@@ -74,7 +76,7 @@ const ContentComponent = () => {
                 }}
               />
             </span>
-            <span className="flex items-center justify-between w-full px-4 text-lg font-normal text-green-600">
+            <span className="flex items-center justify-between w-full px-4 font-normal text-green-600">
               <span className="text-center basis-4 shrink-0">G</span>
               <input
                 type="range"
@@ -102,7 +104,7 @@ const ContentComponent = () => {
                 }}
               />
             </span>
-            <span className="flex items-center justify-between w-full px-4 text-lg font-normal text-blue-600">
+            <span className="flex items-center justify-between w-full px-4 font-normal text-blue-600">
               <span className="text-center basis-4 shrink-0">B</span>
               <input
                 type="range"
@@ -139,7 +141,7 @@ const ContentComponent = () => {
               setBgColor(hexToRGB(e.target.value));
             }}
           />
-          <span className="flex flex-row justify-around w-full">
+          <span className="flex flex-row justify-around w-full max-sm:text-sm">
             Contrast Ratio
             <label className="flex flex-row gap-2">
               <input
@@ -179,7 +181,7 @@ const ContentComponent = () => {
             type="button"
             tabIndex={7}
             onClick={handleBtnClick}
-            className="w-4/5 h-10 rounded-md cursor-pointer bg-slate-400"
+            className="w-4/5 h-10 rounded-md cursor-pointer bg-slate-400 max-sm:text-sm"
             value="Extract FgColor"
           />
         </div>
@@ -191,7 +193,7 @@ const ContentComponent = () => {
             style={{
               color: rgbToHex(...fgColor),
             }}
-            className="text-lg"
+            className="text-lg max-sm:text-sm"
           >
             Lorem ipsum dolor sit amet,
           </span>
@@ -199,7 +201,7 @@ const ContentComponent = () => {
             style={{
               color: rgbToHex(...fgColor),
             }}
-            className="text-xl font-bold"
+            className="text-xl font-bold max-sm:text-lg"
           >
             consectetur adipiscing elit.
           </span>
@@ -216,7 +218,7 @@ const ContentComponent = () => {
             }}
             type="text"
             placeholder="type in text to test contrast"
-            className="w-4/5 text-center bg-transparent border-2 focus:outline-none"
+            className="w-4/5 text-center bg-transparent border-2 focus:outline-none max-sm:text-sm"
           ></input>
         </div>
       </div>
