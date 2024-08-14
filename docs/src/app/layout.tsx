@@ -10,21 +10,15 @@ export const metadata: Metadata = {
     icon: "favicon.png",
   },
   openGraph: {
+    url: "https://a11y-contrast-color.vercel.app",
+    type: "website",
+    siteName: "A11y Contrast Color Playground",
     images: [
       {
         url: "og-image.jpg",
         width: 1200,
         height: 630,
         alt: "ACC Logo",
-      },
-    ],
-  },
-  twitter: {
-    images: [
-      {
-        url: "og-image.jpg",
-        width: 1200,
-        height: 630,
       },
     ],
   },
@@ -37,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-col items-center justify-center w-full h-full bg-slate-100">
+      <body className="flex flex-col items-center justify-center w-full h-full overflow-x-hidden bg-slate-100">
         {children}
       </body>
     </html>

@@ -23,11 +23,11 @@ const ContentComponent = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-full">
-      <h1 className="text-4xl font-bold max-sm:text-xl">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-2">
+      <h1 className="text-4xl font-bold h-fit max-sm:text-xl">
         🎨 A11y-contrast-color 🎨
       </h1>
-      <div className="flex flex-row flex-wrap items-center justify-between w-full h-32 text-lg font-semibold max-sm:text-sm">
+      <div className="flex flex-row flex-wrap items-center justify-between w-full text-lg font-semibold h-fit max-sm:text-sm">
         <span className="flex flex-col items-center lg:basis-80">
           BgColor
           <span className="text-lg font-normal max-sm:text-sm">

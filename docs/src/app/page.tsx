@@ -2,7 +2,7 @@ import ContentComponent from "./Content";
 
 export default function Home() {
   return (
-    <main className="max-w-[60rem] h-fit flex flex-col justify-between items-center gap-10 p-10 bg-white border border-slate-300 rounded-md relative">
+    <main className="max-w-[60rem] h-fit flex flex-col justify-between items-center gap-10 p-10 bg-white border border-slate-300 rounded-md relative max-sm:h-full max-sm:bg-transparent max-sm:border-none">
       <span className="absolute flex flex-row gap-1 right-1 top-1">
         <a
           href="https://www.npmjs.com/package/a11y-contrast-color"
