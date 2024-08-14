@@ -4,9 +4,28 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "A11y Contrast Color Playground",
-  description: "A playground for the a11y-contrast-color library",
+  description: "Playground for the a11y-contrast-color library",
   icons: {
     icon: "favicon.png",
+  },
+  openGraph: {
+    images: [
+      {
+        url: "favicon.png",
+        width: 100,
+        height: 100,
+        alt: "ACC Logo",
+      },
+    ],
+  },
+  twitter: {
+    images: [
+      {
+        url: "favicon.png",
+        width: 100,
+        height: 100,
+      },
+    ],
   },
 };
 
