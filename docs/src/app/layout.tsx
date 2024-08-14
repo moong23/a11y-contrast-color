@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "og-image.png",
+        url: "og-image.jpg",
         width: 1200,
         height: 630,
         alt: "ACC Logo",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     images: [
       {
-        url: "og-image.png",
+        url: "og-image.jpg",
         width: 1200,
         height: 630,
       },
