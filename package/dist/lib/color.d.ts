@@ -5,13 +5,13 @@ import type { RGB } from '../types/color';
  * @param {RGB} color2 - The second RGB color.
  * @returns {number} The contrast ratio.
  */
-export declare const getContrastRatio: (color1: number[], color2: number[]) => number;
+export declare const getContrastRatio: (color1: RGB, color2: RGB) => number;
 /**
  * Calculate luminance from RGB values.
  * @param {Array} RGBValue - Array containing R, G, B values.
  * @returns {number} The calculated luminance.
  */
-export declare const getLuminance: (RGBValue: number[]) => number;
+export declare const getLuminance: (RGBValue: RGB) => number;
 /**
  * Finds color which has the contrast greater than the specified luminance with the given color.
  * @param {RGB} color - The base RGB color. (validate if the given color is RGB format)

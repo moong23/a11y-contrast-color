@@ -47,8 +47,6 @@ const calculateContrastRatio = (lum1, lum2) => {
  * @returns {number} The contrast ratio.
  */
 const getContrastRatio = (color1, color2) => {
-    validateColor(color1);
-    validateColor(color2);
     return calculateContrastRatio((0, exports.getLuminance)(color1), (0, exports.getLuminance)(color2));
 };
 exports.getContrastRatio = getContrastRatio;
@@ -58,7 +56,6 @@ exports.getContrastRatio = getContrastRatio;
  * @returns {number} The calculated luminance.
  */
 const getLuminance = (RGBValue) => {
-    validateColor(RGBValue);
     const LinearRGB = RGBValue.map(RGB8bitToLinear);
     return 0.2126 * LinearRGB[0] + 0.7152 * LinearRGB[1] + 0.0722 * LinearRGB[2];
 };
