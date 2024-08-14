@@ -4,16 +4,17 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "A11y Contrast Color Playground",
-  description: "Playground for the a11y-contrast-color library",
+  description:
+    "Best utility library  to find contrast colors to ensure web accessibility.",
   icons: {
     icon: "favicon.png",
   },
   openGraph: {
     images: [
       {
-        url: "favicon.png",
-        width: 100,
-        height: 100,
+        url: "og-image.png",
+        width: 1200,
+        height: 630,
         alt: "ACC Logo",
       },
     ],
@@ -21,9 +22,9 @@ export const metadata: Metadata = {
   twitter: {
     images: [
       {
-        url: "favicon.png",
-        width: 100,
-        height: 100,
+        url: "og-image.png",
+        width: 1200,
+        height: 630,
       },
     ],
   },
