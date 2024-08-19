@@ -1,2 +1,2 @@
-export * from '../lib/color';
+export { getContrastRatio, getLuminance, getContrastColor } from '../lib/color';
 export * from '../types/color';

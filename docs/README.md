@@ -1,5 +1,44 @@
 # 🎨 a11y-contrast-color 🎨
 
+<p>
+  <a
+    href="https://www.npmjs.com/package/a11y-contrast-color"
+    target="_blank"
+  >
+    <img
+      src="https://img.shields.io/npm/v/a11y-contrast-color.svg?style=flat-square"
+      alt="version"
+    />
+  </a>
+  <a
+    href="https://npmtrends.com/a11y-contrast-color"
+    target="_blank"
+  >
+    <img
+      src="https://img.shields.io/npm/dt/a11y-contrast-color"
+      alt="downloads"
+    />
+  </a>
+  <a
+    href="https://a11y-contrast-color.vercel.app/"
+    target="_blank"
+  >
+    <img
+    height="20px"
+    src="https://img.shields.io/badge/Website-Demo-orange?style=flat-square"
+  />
+  </a>
+  <a
+    href="https://github.com/moong23/a11y-contrast-color"
+    target="_blank"
+  >
+    <img
+      height="20px"
+      src="https://img.shields.io/badge/Github Repository-181717?style=flat-square&logo=Github&logoColor=white"
+    />
+  </a>
+</p>
+
 **a11y-contrast-color** is a utility library for calculating [luminance](https://www.w3.org/TR/WCAG20/relative-luminance.xml), [contrast ratio](https://www.w3.org/TR/WCAG20/#contrast-ratiodef), and recommending appropriate contrast colors to ensure accessibility compliance in web applications.
 
 It helps developers easily determine whether text and background color combinations meet the [Web Content Accessibility Guidelines(WCAG) standards](https://www.w3.org/WAI/older-users/developing/#color) by providing functions to recommend contrast colors that can improve readability and accessibility.

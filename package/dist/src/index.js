@@ -14,5 +14,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("../lib/color"), exports);
+exports.getContrastColor = exports.getLuminance = exports.getContrastRatio = void 0;
+var color_1 = require("../lib/color");
+Object.defineProperty(exports, "getContrastRatio", { enumerable: true, get: function () { return color_1.getContrastRatio; } });
+Object.defineProperty(exports, "getLuminance", { enumerable: true, get: function () { return color_1.getLuminance; } });
+Object.defineProperty(exports, "getContrastColor", { enumerable: true, get: function () { return color_1.getContrastColor; } });
 __exportStar(require("../types/color"), exports);
