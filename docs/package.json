@@ -1,6 +1,6 @@
 {
   "name": "a11y-contrast-color_docs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "a11y-contrast-color": "^1.0.4",
+    "a11y-contrast-color": "^1.1.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
